@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Fireball Testing</title>
+</head>
+<body>
+
+  <h1>Fireball Testing</h1>
+  <p id="msg"></p>
+
+  <script src="Fireball.js"></script>
+  <script>
+    Fireball.run({
+      debug: true,
+      runs: 7,
+      defaultScore: 5000,
+      callback: function(score) {
+        document.getElementById('msg').innerHTML = 'Complete! Your score is ' + Fireball.score;
+      }
+    });
+
+  </script>
+
+</body>
+</html>
