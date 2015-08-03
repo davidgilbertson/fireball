@@ -1,5 +1,6 @@
-#Fireball
-It's breakpoints for performance.
+# Fireball
+
+Breakpoints for performance.
 
 Fireball is a small script that runs when your web page is loaded. It generates a score based on the performance of the user's hardware. 
 
