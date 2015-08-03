@@ -50,8 +50,7 @@ Fireball.log = function(str) {
         'color': '#eee',
         'overflow': 'auto',
         'box-shadow': '2px 2px 20px rgba(0, 0, 0, 0.5)',
-        'z-index': '99',
-        'cursor': 'move'
+        'z-index': '99'
       }
     });
     
