@@ -2,26 +2,33 @@
 <head>
     <meta charset="utf-8">
     <title>Fireball Testing</title>
-    
+
     <meta name="viewport" content="width=device-width, user-scalable=no">
 </head>
 <body>
 
-  <h1>Fireball Testing</h1>
-  <p id="msg"></p>
+<h1>Fireball Testing</h1>
 
-  <script src="Fireball.js"></script>
-  <script>
+<p id="msg"></p>
+
+<script src="Fireball.js"></script>
+<script>
     Fireball.run({
-      debug: true,
-      runs: 7,
-      defaultScore: 5000,
-      callback: function(score) {
-        document.getElementById('msg').innerHTML = 'Complete! Your score is ' + Fireball.score;
-      }
+        debug: true,
+        runs: 7,
+        defaultScore: 5000,
+        classEl: 'body',
+        speedRanges: [
+            {min: 0, className: 'snail'},
+            {min: 5000, className: 'puppy'},
+            {min: 10000, className: 'cheetah'}
+        ],
+        callback: function (score) {
+            document.getElementById('msg').innerHTML = 'Complete! Your score is ' + Fireball.score;
+        }
     });
 
-  </script>
+</script>
 
 </body>
 </html>
