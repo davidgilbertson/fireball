@@ -79,7 +79,7 @@ Fireball.log = function (str) {
         var logDiv = Fireball.newEl('div', {id: 'log'});
         logEl.appendChild(logDiv);
 
-        document.getElementsByTagName('body')[0].appendChild(logEl);
+        document.querySelector('body').appendChild(logEl);
     }
 
     var log = document.querySelector('#log');
