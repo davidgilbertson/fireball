@@ -24,7 +24,7 @@
             {min: 10000, className: 'cheetah'}
         ],
         callback: function (score) {
-            document.getElementById('msg').innerHTML = 'Complete! Your score is ' + Fireball.score;
+            document.querySelector('#msg').innerHTML = 'Complete! Your score is ' + Fireball.score.toLocaleString();
         }
     });
 

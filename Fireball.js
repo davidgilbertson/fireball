@@ -82,12 +82,10 @@ Fireball.log = function (str) {
         document.getElementsByTagName('body')[0].appendChild(logEl);
     }
 
-    var median = Fireball.getMedianScore().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
     var log = document.querySelector('#log');
 
     if (str === '_finished_') {
-        document.querySelector('#log-median').textContent = 'Score: ' + median;
+        document.querySelector('#log-median').textContent = 'Score: ' + Fireball.getMedianScore().toLocaleString();
 
         log.style.color = 'grey';
     } else {
@@ -141,8 +139,7 @@ Fireball.run = function (options) {
         count++;
 
         if (debug === true) {
-            score = score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            Fireball.log(score);
+            Fireball.log(score.toLocaleString());
         }
 
         if (count < runs) {
