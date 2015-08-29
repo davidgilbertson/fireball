@@ -1,5 +1,4 @@
 # Fireball
-
 Breakpoints for performance.
 
 Fireball is a small script that runs when your web page is loaded. It generates a score based on the performance of the user's hardware. 
@@ -7,29 +6,62 @@ Fireball is a small script that runs when your web page is loaded. It generates 
 It hands off the work to a worker process so won't slow the rest of your site down while it's running.
 
 ## Example usage
+### The simple way
+`Fireball.run()`
+
+The resulting score will be available in your JavaScript as `Fireball.score` after a few seconds.
+
+```javascript
+if (Fireball.score > 8000){
+    //Do something to delight the user
+} else {
+    //Do something boring but easy on the CPU
+}
+```
+
+### With classes
 ```javascript
 Fireball.run({
-  debug: true, //defaults to false
-  runs: 7, //defaults to 7
-  defaultScore: 5000, //defaults to 0
-  callback: function(score) {
-    if (Fireball.score > 5000){
-      //Start some awesome background animation
-    } else {
-      //Load some boring background image
-    }
-  }
+    speedRanges: [
+        {min: 0, className: 'sloth'},
+        {min: 4000, className: 'tortoise'},
+        {min: 8000, className: 'puppy'},
+        {min: 16000, className: 'cheetah'}
+    ]
 });
 ```
 
-None of the parameters are required. `Fireball.run()` will work fine. The default score will be used if run on a machine 
-that doesn't support web workers. 
-It's up to you to assume what no support means (personally, I think machines that don't support web workers are likely to 
-be older desktops, and I like to default it to 5,000).
+These breakpoints will be prefixed with `fireball-` and added as classes to the `<body>` so you can target them in CSS. E.g.
 
-The debug mode gives you a read out on-screen. This lets you run your site on different devices and see what score they get. 
-For example the phones you've tested your site on get around 4,000 - 6,000, some tablets around 8,000 and your desktop 20,000. 
-If your animation looks good on the desktop and tablet, but stutters on the slower phones, 
-then you might conditionally run the animation only if `Fireball.score > 5000`.
+```css
+body.fireball-sloth .my-element {
+    /* no box shadows, transitions, etc. */
+}
 
-Load up the index.html in the same folder as the two JS files to see it in action.
+body.fireball-cheetah .my-element {
+    /* some hella fancy animation */
+}
+```
+
+### With all the bells and whistles
+```javascript
+Fireball.run({
+    debug: true, //shows an onscreen readout. Defaults to false
+    runs: 7, //defaults to 7
+    defaultScore: 5000, //defaults to 0
+    classEl: 'body', //append a class indicating speed to this element. Defaults to 'body'
+    speedRanges: [ //the speed breakpoints and classnames to use
+        {min: 0, className: 'sloth'},
+        {min: 4000, className: 'tortoise'},
+        {min: 8000, className: 'puppy'},
+        {min: 16000, className: 'cheetah'}
+    ],
+    callback: function(score) {
+        //do something now that the tests are done    
+    }
+});
+```
+
+### Benchmark
+The Fireball score is roughly aligned with [the Octane benchmark](http://chromium.github.io/octane/) score;
+if a machine gets 15,000 on octane, the Fireball score will be within a few thousand of that.
