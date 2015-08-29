@@ -11,16 +11,28 @@
             font-family: sans-serif;
         }
 
-        body.fireball-snail #msg {
-            color: #a11;
+        .speed-text {
+            color: #aaa;
         }
 
-        body.fireball-puppy #msg {
-            color: #aa1;
+        body.fireball-sloth .speed-text.show-for-sloth {
+            font-weight: 700;
+            color: #222;
         }
 
-        body.fireball-cheetah #msg {
-            color: #11a;
+        body.fireball-tortoise .speed-text.show-for-tortoise {
+            font-weight: 700;
+            color: #222;
+        }
+
+        body.fireball-puppy .speed-text.show-for-puppy {
+            font-weight: 700;
+            color: #222;
+        }
+
+        body.fireball-cheetah .speed-text.show-for-cheetah {
+            font-weight: 700;
+            color: #222;
         }
 
     </style>
@@ -28,6 +40,11 @@
 <body>
 
 <h1>Fireball Testing</h1>
+
+<p class="speed-text show-for-sloth">Your machine would rather be sleeping in a tree than processing this web page.</p>
+<p class="speed-text show-for-tortoise">Your machine resembles a tortoise that is pretty excited to be somewhere.</p>
+<p class="speed-text show-for-puppy">Your machine has the energy of a frisky puppy.</p>
+<p class="speed-text show-for-cheetah">Your machine has the spirit of a cheetah.</p>
 
 <p id="msg"></p>
 
@@ -39,12 +56,13 @@
         defaultScore: 5000,
         classEl: 'body',
         speedRanges: [
-            {min: 0, className: 'snail'},
-            {min: 5000, className: 'puppy'},
-            {min: 10000, className: 'cheetah'}
+            {min: 0, className: 'sloth'},
+            {min: 4000, className: 'tortoise'},
+            {min: 8000, className: 'puppy'},
+            {min: 16000, className: 'cheetah'}
         ],
         callback: function (score) {
-            document.querySelector('#msg').innerHTML = 'Complete! Your score is ' + Fireball.score.toLocaleString();
+            document.querySelector('#msg').innerHTML = 'Your score is ' + Fireball.score.toLocaleString();
         }
     });
 
