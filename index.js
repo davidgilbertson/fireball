@@ -1,10 +1,9 @@
 'use strict';
 
-var Fireball = Fireball || {};
+var scores = [];
+var score = 0;
 
-Fireball.scores = [];
-
-Fireball.newEl = function (tag, opt) {
+function newEl(tag, opt) {
     tag = tag || 'div';
 
     var el = document.createElement(tag);
@@ -22,18 +21,14 @@ Fireball.newEl = function (tag, opt) {
     }
 
     return el;
-};
+}
 
-Fireball.getEl = function (str) {
-    return document.querySelector(str);
-};
-
-Fireball.getMedianScore = function () {
-    if (Fireball.scores.length === 0) {
+function getMedianScore() {
+    if (scores.length === 0) {
         return;
     }
 
-    var scoreArray = Fireball.scores;
+    var scoreArray = scores;
     var midPoint = Math.floor(scoreArray.length / 2);
     var result;
 
@@ -46,11 +41,11 @@ Fireball.getMedianScore = function () {
     }
 
     return Math.round(result);
-};
+}
 
-Fireball.log = function (str) {
+function log(str) {
     if (!document.querySelector('#logging-panel')) {
-        var logEl = Fireball.newEl('div', {
+        var logEl = newEl('div', {
             id: 'logging-panel',
             style: {
                 'position': 'fixed',
@@ -70,13 +65,13 @@ Fireball.log = function (str) {
             }
         });
 
-        var logH1 = Fireball.newEl('h1', {textContent: 'Fireball'});
+        var logH1 = newEl('h1', {textContent: 'Fireball'});
         logEl.appendChild(logH1);
 
-        var logMedian = Fireball.newEl('p', {id: 'log-median'});
+        var logMedian = newEl('p', {id: 'log-median'});
         logEl.appendChild(logMedian);
 
-        var logDiv = Fireball.newEl('div', {id: 'log'});
+        var logDiv = newEl('div', {id: 'log'});
         logEl.appendChild(logDiv);
 
         document.querySelector('body').appendChild(logEl);
@@ -85,20 +80,20 @@ Fireball.log = function (str) {
     var log = document.querySelector('#log');
 
     if (str === '_finished_') {
-        document.querySelector('#log-median').textContent = 'Score: ' + Fireball.getMedianScore().toLocaleString();
+        document.querySelector('#log-median').textContent = 'Score: ' + getMedianScore().toLocaleString();
 
         log.style.color = 'grey';
     } else {
         log.innerHTML += '<p> >' + str + '</p>';
     }
-};
+}
 
-Fireball.appendClasses = function (options) {
+function appendClasses(options) {
     var i;
     var className = options.speedRanges[0].className;
 
     for (i = 1; i < options.speedRanges.length; i++) {
-        if (Fireball.score >= options.speedRanges[i].min) {
+        if (score >= options.speedRanges[i].min) {
             className = options.speedRanges[i].className;
         }
     }
@@ -111,11 +106,11 @@ Fireball.appendClasses = function (options) {
             classEl.classList.add(className); // If window.Worker exists, classList almost certainly does
         }
     }
-};
+}
 
-Fireball.run = function (options) {
+function runFireball(options) {
     if (!window.Worker) {
-        Fireball.score = options.defaultScore || 0;
+        score = options.defaultScore || 0;
         options.callback && options.callback();
         return;
     }
@@ -125,7 +120,7 @@ Fireball.run = function (options) {
     var debug = options.debug || false;
     var runs = options.runs || 7;
     var count = 0;
-    var fbWorker = new Worker('fireball_worker.js');
+    var fbWorker = new Worker('/fireball/fireball_worker.js');
 
     fbWorker.addEventListener('message', function (e) {
         logScore(e.data);
@@ -134,13 +129,13 @@ Fireball.run = function (options) {
     function logScore(score) {
         score = parseInt(score * 6.1813, 10); //align it roughly with Octane
 
-        Fireball.scores.push(score);
-        Fireball.score = Fireball.getMedianScore();
+        scores.push(score);
+        score = getMedianScore();
 
         count++;
 
         if (debug === true) {
-            Fireball.log(score.toLocaleString());
+            log(score.toLocaleString());
         }
 
         if (count < runs) {
@@ -149,11 +144,11 @@ Fireball.run = function (options) {
             }, 100);
         } else {
             if (debug === true) {
-                Fireball.log('_finished_');
+                log('_finished_');
             }
 
-            if (options.classEl && options.speedRanges) {
-                Fireball.appendClasses(options);
+            if (options.speedRanges) {
+                appendClasses(options);
             }
 
             options.callback && options.callback();
@@ -161,4 +156,9 @@ Fireball.run = function (options) {
     }
 
     fbWorker.postMessage('run');
+}
+
+module.exports = {
+    run: runFireball,
+    score: score
 };

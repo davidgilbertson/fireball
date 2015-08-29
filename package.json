@@ -1,8 +1,8 @@
 {
-  "name": "fireball",
+  "name": "fireball-js",
   "version": "1.0.0",
   "description": "Breakpoints for performance",
-  "main": "Fireball.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
