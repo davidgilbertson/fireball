@@ -1,0 +1,19 @@
+{
+  "name": "fireball",
+  "version": "1.0.0",
+  "description": "Breakpoints for performance",
+  "main": "Fireball.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidgilbertson/fireball.git"
+  },
+  "author": "David Gilbertson <gilbertson.david@gmail.com> (http://www.dg707.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidgilbertson/fireball/issues"
+  },
+  "homepage": "https://github.com/davidgilbertson/fireball#readme"
+}
