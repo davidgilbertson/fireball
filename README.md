@@ -23,22 +23,22 @@ if (Fireball.score > 8000){
 ```javascript
 Fireball.run({
     speedRanges: [
-        {min: 0, className: 'sloth'},
-        {min: 4000, className: 'tortoise'},
-        {min: 8000, className: 'puppy'},
-        {min: 16000, className: 'cheetah'}
+        {min: 0, className: 'speed-of-sloth'},
+        {min: 4000, className: 'speed-of-tortoise'},
+        {min: 8000, className: 'speed-of-puppy'},
+        {min: 16000, className: 'speed-of-cheetah'}
     ]
 });
 ```
 
-These breakpoints will be prefixed with `fireball-` and added as classes to the `<body>` so you can target them in CSS. E.g.
+These breakpoints will be added as classes to the `<body>` so you can target them in CSS. E.g.
 
 ```css
-body.fireball-sloth .my-element {
+body.speed-of-sloth .my-element {
     /* no box shadows, transitions, etc. */
 }
 
-body.fireball-cheetah .my-element {
+body.speed-of-cheetah .my-element {
     /* some hella fancy animation */
 }
 ```

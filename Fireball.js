@@ -108,7 +108,7 @@ Fireball.appendClasses = function (options) {
         var classEl = document.querySelector(classSelector);
 
         if (classEl) {
-            classEl.classList.add('fireball-' + className); // If window.Worker exists, classList almost certainly does
+            classEl.classList.add(className); // If window.Worker exists, classList almost certainly does
         }
     }
 };
