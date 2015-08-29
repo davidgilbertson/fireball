@@ -104,7 +104,8 @@ Fireball.appendClasses = function (options) {
     }
 
     if (className) {
-        var classEl = document.querySelector(options.classEl);
+        var classSelector = options.classEl || 'body';
+        var classEl = document.querySelector(classSelector);
 
         if (classEl) {
             classEl.classList.add('fireball-' + className); // If window.Worker exists, classList almost certainly does
