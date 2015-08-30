@@ -3,23 +3,36 @@ Breakpoints for performance.
 
 Fireball is a small script that runs when your web page is loaded. It generates a score based on the performance of the user's hardware. 
 
-It hands off the work to a worker process so won't slow the rest of your site down while it's running.
+It hands off the work to a different thread so won't slow the rest of your site down while it's running.
 
 ## Example usage
-### The simple way
-`Fireball.run()`
 
-The resulting score will be available in your JavaScript as `Fireball.score` after a few seconds.
+### Setup
+Fireball uses a [Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) to calculate a score, which needs to be loaded from your server. To make sure the browser can find the
+worker file, you may need to configure your server. 
+For example, if you have an express server called `server`, you would do something like this:
 
 ```javascript
-if (Fireball.score > 8000){
+server.use('/fireball-js', express.static(path.resolve(__dirname, '../../../fireball-js')));
+```
+
+### Running fireball, the simple way
+```javascript
+var Fireball = require('fireball-js');
+Fireball.run();
+```
+
+The resulting score will be available in your JavaScript as `Fireball.getScore()` after a few seconds.
+
+```javascript
+if (Fireball.getScore() > 8000){
     //Do something to delight the user
 } else {
     //Do something boring but easy on the CPU
 }
 ```
 
-### With classes
+### Running fireball with classes
 ```javascript
 Fireball.run({
     speedRanges: [
@@ -43,7 +56,7 @@ body.speed-of-cheetah .my-element {
 }
 ```
 
-### With all the bells and whistles
+### Running fireball with all the bells and whistles
 ```javascript
 Fireball.run({
     debug: true, //shows an onscreen readout. Defaults to false
@@ -57,11 +70,25 @@ Fireball.run({
         {min: 16000, className: 'cheetah'}
     ],
     callback: function(score) {
-        //do something now that the tests are done    
+        //do something now that the tests are done
+        //  or store the score in a global variable if you're that way inclined
     }
 });
 ```
 
+You can also register a callback like so.
+
+```
+Fireball.onSuccess(callback);
+```
+
+`callback` will be passed a single argument, the score.
+
+This is handy if you have a modular system and want to access the fireball score in a different module 
+without using a global variable. If the score has already been calculated this will execute immediately.
+
 ### Benchmark
 The Fireball score is roughly aligned with [the Octane benchmark](http://chromium.github.io/octane/) score;
-if a machine gets 15,000 on octane, the Fireball score will be within a few thousand of that.
+if a machine gets 15,000 on octane, the Fireball score will be within a few thousand of that. Probably.
+
+Check out the demo on [my site](http://www.dg707.com/fireball) to see what score your machine gets.
