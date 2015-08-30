@@ -87,7 +87,10 @@ Fireball.onSuccess(callback);
 This is handy if you have a modular system and want to access the fireball score in a different module 
 without using a global variable. If the score has already been calculated this will execute immediately.
 
-### Benchmark
+## Browser support
+Modern browsers and IE10+, Android 4.4+, Safari 5.1+
+
+## Benchmark
 The Fireball score is roughly aligned with [the Octane benchmark](http://chromium.github.io/octane/) score;
 if a machine gets 15,000 on octane, the Fireball score will be within a few thousand of that. Probably.
 
