@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run babel && npm run uglify",
     "babel": "babel src/index.js --out-file src/index-es5.js",
-    "uglify": "uglifyjs src/index-es5.js --output dist/index.min.js --screw-ie8 --compress",
-    "prepublish": "npm run build"
+    "uglify": "uglifyjs src/index-es5.js --output dist/index.min.js --screw-ie8 --compress"
   },
   "repository": {
     "type": "git",
