@@ -2,12 +2,13 @@
   "name": "fireball-js",
   "version": "1.1.0",
   "description": "Breakpoints for performance",
-  "main": "dist/index.js",
+  "main": "dist/index.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run babel && npm run uglify",
     "babel": "babel src/index.js --out-file src/index-es5.js",
-    "uglify": "uglifyjs src/index-es5.js --output dist/index.min.js --screw-ie8 --compress"
+    "uglify": "uglifyjs src/index-es5.js --output dist/index.min.js --screw-ie8 --compress",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
