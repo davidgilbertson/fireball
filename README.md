@@ -13,7 +13,7 @@ worker file, you may need to configure your server.
 For example, if you have an express server called `server`, you would do something like this:
 
 ```javascript
-server.use('/fireball-js', express.static(path.resolve(__dirname, '../../../fireball-js')));
+server.use('/fireball-js', express.static(path.resolve(__dirname, '../../node_modules/fireball-js')));
 ```
 
 ### Running fireball, the simple way
