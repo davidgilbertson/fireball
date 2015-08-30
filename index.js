@@ -1,7 +1,9 @@
 'use strict';
 
 var scores = [];
-var score = 0;
+var finalScore = 0;
+var callbacks = [];
+var hasFinished = false;
 
 function newEl(tag, opt) {
     tag = tag || 'div';
@@ -21,6 +23,14 @@ function newEl(tag, opt) {
     }
 
     return el;
+}
+
+function runCallbacks() {
+    if (!callbacks.length) return;
+
+    for (var i = 0; i < callbacks.length; i++) {
+        callbacks[i](finalScore);
+    }
 }
 
 function getMedianScore() {
@@ -93,7 +103,7 @@ function appendClasses(options) {
     var className = options.speedRanges[0].className;
 
     for (i = 1; i < options.speedRanges.length; i++) {
-        if (score >= options.speedRanges[i].min) {
+        if (finalScore >= options.speedRanges[i].min) {
             className = options.speedRanges[i].className;
         }
     }
@@ -109,8 +119,9 @@ function appendClasses(options) {
 }
 
 function runFireball(options) {
+    finalScore = options.defaultScore || 0;
+
     if (!window.Worker) {
-        score = options.defaultScore || 0;
         options.callback && options.callback();
         return;
     }
@@ -120,22 +131,22 @@ function runFireball(options) {
     var debug = options.debug || false;
     var runs = options.runs || 7;
     var count = 0;
-    var fbWorker = new Worker('/fireball/fireball_worker.js');
+    var fbWorker = new Worker('/fireball-js/fireball_worker.js');
 
     fbWorker.addEventListener('message', function (e) {
         logScore(e.data);
     }, false);
 
-    function logScore(score) {
-        score = parseInt(score * 6.1813, 10); //align it roughly with Octane
+    function logScore(rawScore) {
+        var thisScore = parseInt(rawScore * 6.1813, 10); //align it roughly with Octane
 
-        scores.push(score);
-        score = getMedianScore();
+        scores.push(thisScore);
+        finalScore = getMedianScore();
 
         count++;
 
-        if (debug === true) {
-            log(score.toLocaleString());
+        if (debug) {
+            log(finalScore.toLocaleString());
         }
 
         if (count < runs) {
@@ -143,7 +154,11 @@ function runFireball(options) {
                 fbWorker.postMessage('run');
             }, 100);
         } else {
-            if (debug === true) {
+            hasFinished = true;
+
+            runCallbacks();
+
+            if (debug) {
                 log('_finished_');
             }
 
@@ -158,7 +173,20 @@ function runFireball(options) {
     fbWorker.postMessage('run');
 }
 
+function getScore() {
+    return finalScore;
+}
+
+function addCallback(callback) {
+    if (hasFinished) {
+        callback(finalScore);
+    } else {
+        callbacks.push(callback);
+    }
+}
+
 module.exports = {
     run: runFireball,
-    score: score
+    getScore: getScore,
+    onSuccess: addCallback
 };
