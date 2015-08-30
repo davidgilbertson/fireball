@@ -1,19 +1,17 @@
-'use strict';
-
-var scores = [];
-var finalScore = 0;
-var callbacks = [];
-var hasFinished = false;
+const callbacks = [];
+let finalScore = 0;
+let hasFinished = false;
+const scores = [];
 
 function newEl(tag, opt) {
     tag = tag || 'div';
 
-    var el = document.createElement(tag);
+    const el = document.createElement(tag);
 
-    for (var prop in opt) {
+    for (const prop in opt) {
         if (prop.hasOwnProperty) {
             if (prop === 'style') {
-                for (var styleProp in opt[prop]) {
+                for (const styleProp in opt[prop]) {
                     el[prop][styleProp] = opt[prop][styleProp];
                 }
             } else {
@@ -26,21 +24,17 @@ function newEl(tag, opt) {
 }
 
 function runCallbacks() {
-    if (!callbacks.length) return;
-
-    for (var i = 0; i < callbacks.length; i++) {
-        callbacks[i](finalScore);
-    }
+    callbacks.forEach((callback) => {
+        callback(finalScore);
+    });
 }
 
 function getMedianScore() {
-    if (scores.length === 0) {
-        return;
-    }
+    if (!scores.length) return;
 
-    var scoreArray = scores;
-    var midPoint = Math.floor(scoreArray.length / 2);
-    var result;
+    let scoreArray = scores;
+    const midPoint = Math.floor(scoreArray.length / 2);
+    let result;
 
     scoreArray.sort();
 
@@ -55,7 +49,7 @@ function getMedianScore() {
 
 function log(str) {
     if (!document.querySelector('#logging-panel')) {
-        var logEl = newEl('div', {
+        const logEl = newEl('div', {
             id: 'logging-panel',
             style: {
                 'position': 'fixed',
@@ -75,19 +69,19 @@ function log(str) {
             }
         });
 
-        var logH1 = newEl('h1', {textContent: 'Fireball'});
+        const logH1 = newEl('h1', {textContent: 'Fireball'});
         logEl.appendChild(logH1);
 
-        var logMedian = newEl('p', {id: 'log-median'});
+        const logMedian = newEl('p', {id: 'log-median'});
         logEl.appendChild(logMedian);
 
-        var logDiv = newEl('div', {id: 'log'});
+        const logDiv = newEl('div', {id: 'log'});
         logEl.appendChild(logDiv);
 
         document.querySelector('body').appendChild(logEl);
     }
 
-    var log = document.querySelector('#log');
+    const log = document.querySelector('#log');
 
     if (str === '_finished_') {
         document.querySelector('#log-median').textContent = 'Score: ' + getMedianScore().toLocaleString();
@@ -99,8 +93,8 @@ function log(str) {
 }
 
 function appendClasses(options) {
-    var i;
-    var className = options.speedRanges[0].className;
+    let i;
+    let className = options.speedRanges[0].className;
 
     for (i = 1; i < options.speedRanges.length; i++) {
         if (finalScore >= options.speedRanges[i].min) {
@@ -108,9 +102,15 @@ function appendClasses(options) {
         }
     }
 
+    options.speedRanges.forEach(speedRange => {
+        if (finalScore >= speedRange.min) {
+            className = speedRange.className;
+        }
+    });
+
     if (className) {
-        var classSelector = options.classEl || 'body';
-        var classEl = document.querySelector(classSelector);
+        const classSelector = options.classEl || 'body';
+        const classEl = document.querySelector(classSelector);
 
         if (classEl) {
             classEl.classList.add(className); // If window.Worker exists, classList almost certainly does
@@ -128,26 +128,24 @@ function runFireball(options) {
 
     options = options || {};
 
-    var debug = options.debug || false;
-    var runs = options.runs || 7;
-    var count = 0;
-    var fbWorker = new Worker('/fireball-js/fireball_worker.js');
+    const debug = options.debug || false;
+    const runs = options.runs || 7;
+    let count = 0;
+    const fbWorker = new Worker('/fireball-js/fireball_worker.js');
 
     fbWorker.addEventListener('message', function (e) {
         logScore(e.data);
     }, false);
 
     function logScore(rawScore) {
-        var thisScore = parseInt(rawScore * 6.1813, 10); //align it roughly with Octane
+        const thisScore = parseInt(rawScore * 6.1813, 10); //align it roughly with Octane
 
         scores.push(thisScore);
         finalScore = getMedianScore();
 
         count++;
 
-        if (debug) {
-            log(finalScore.toLocaleString());
-        }
+        if (debug) log(finalScore.toLocaleString());
 
         if (count < runs) {
             window.setTimeout(function () {
@@ -158,13 +156,9 @@ function runFireball(options) {
 
             runCallbacks();
 
-            if (debug) {
-                log('_finished_');
-            }
+            if (debug) log('_finished_');
 
-            if (options.speedRanges) {
-                appendClasses(options);
-            }
+            if (options.speedRanges) appendClasses(options);
 
             options.callback && options.callback();
         }
@@ -185,7 +179,7 @@ function addCallback(callback) {
     }
 }
 
-module.exports = {
+export default {
     run: runFireball,
     getScore: getScore,
     onSuccess: addCallback
