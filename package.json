@@ -1,19 +1,28 @@
 {
   "name": "fireball-js",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Breakpoints for performance",
   "main": "dist/index.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run babel && npm run uglify",
+    "build": "npm run babel && npm run bowrap && npm run uglify && npm run clean",
     "babel": "babel src/index.js --out-file src/index-es5-temp.js",
-    "uglify": "uglifyjs src/index-es5-temp.js --output dist/index.min.js --screw-ie8 --compress"
+    "bowrap": "bowrap src/index-es5-temp.js -n fireball -o src/index-bowrapped-temp.js",
+    "uglify": "uglifyjs src/index-bowrapped-temp.js --output dist/index.min.js --screw-ie8 --compress",
+    "clean": "del-cli src/*temp.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/davidgilbertson/fireball.git"
   },
   "author": "David Gilbertson <gilbertson.david@gmail.com> (http://www.dg707.com)",
+  "contributors": [
+    {
+      "name" : "Fergal Hanley",
+      "email" : "fergalhanley@gmail.com",
+      "url" : "http://fergalhanley.com/"
+    }
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/davidgilbertson/fireball/issues"
@@ -21,6 +30,8 @@
   "homepage": "https://github.com/davidgilbertson/fireball#readme",
   "devDependencies": {
     "babel": "^5.8.23",
+    "bowrap": "1.0.5",
+    "del-cli": "^0.2.0",
     "uglify-js": "^2.4.24"
   }
 }

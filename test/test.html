@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>fireball test</title>
+</head>
+<body>
+<div id="mocha"></div>
+<script src="../dist/index.min.js"></script>
+<script>
+    fireball.run({
+        debug: true, //shows an onscreen readout. Defaults to false
+        runs: 7, //defaults to 7
+        defaultScore: 5000, //defaults to 0
+        classEl: 'body', //append a class indicating speed to this element. Defaults to 'body'
+        speedRanges: [ //the speed breakpoints and classnames to use
+            {min: 0, className: 'sloth'},
+            {min: 4000, className: 'tortoise'},
+            {min: 8000, className: 'puppy'},
+            {min: 16000, className: 'cheetah'}
+        ]
+    });
+</script>
+</body>
+</html>

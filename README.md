@@ -8,13 +8,7 @@ It hands off the work to a different thread so won't slow the rest of your site 
 ## Example usage
 
 ### Setup
-Fireball uses a [Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) to calculate a score, which needs to be loaded from your server. To make sure the browser can find the
-worker file, you may need to configure your server. 
-For example, if you have an express server called `server`, you would do something like this:
-
-```javascript
-server.use('/fireball-js', express.static(path.resolve(__dirname, '../../node_modules/fireball-js')));
-```
+Fireball uses a [Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) to calculate a score, which is loaded dynamically when fireball initialises. No need to host the worker script in another file.
 
 ### Running fireball, the simple way
 ```javascript
