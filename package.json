@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run babel && npm run bowrap && npm run uglify && npm run clean",
     "babel": "babel src/index.js --out-file src/index-es5-temp.js",
-    "bowrap": "bowrap src/index-es5-temp.js -n fireball -o src/index-bowrapped-temp.js",
+    "bowrap": "bowrap src/index-es5-temp.js -n Fireball -o src/index-bowrapped-temp.js",
     "uglify": "uglifyjs src/index-bowrapped-temp.js --output dist/index.min.js --screw-ie8 --compress",
     "clean": "del-cli src/*temp.js"
   },
@@ -20,7 +20,7 @@
     {
       "name" : "Fergal Hanley",
       "email" : "fergalhanley@gmail.com",
-      "url" : "http://fergalhanley.com/"
+      "url" : "http://fergalhanley.com"
     }
   ],
   "license": "ISC",

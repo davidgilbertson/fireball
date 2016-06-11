@@ -5,6 +5,16 @@ Fireball is a small script that runs when your web page is loaded. It generates 
 
 It hands off the work to a different thread so won't slow the rest of your site down while it's running.
 
+## Installation
+
+```
+npm install fireball --save
+```
+
+```
+bower install fireball
+```
+
 ## Example usage
 
 ### Setup
@@ -15,6 +25,13 @@ Fireball uses a [Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker
 var Fireball = require('fireball-js');
 Fireball.run();
 ```
+
+or if adding the script directly or using bower the Fireball will be already available: 
+
+```javascript
+Fireball.run();
+```
+
 
 The resulting score will be available in your JavaScript as `Fireball.getScore()` after a few seconds.
 
