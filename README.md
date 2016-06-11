@@ -26,7 +26,7 @@ var Fireball = require('fireball-js');
 Fireball.run();
 ```
 
-or if adding the script directly or using bower the Fireball will be already available: 
+or if adding the script directly or using bower Fireball will be already available: 
 
 ```javascript
 Fireball.run();

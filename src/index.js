@@ -154,8 +154,8 @@ function run(options) {
     const debug = options.debug || false;
     const runs = options.runs || 7;
     let count = 0;
-    var blobURL = URL.createObjectURL(new Blob(
-        ['(', fireballWorker.toString(), ')()'],
+    const blobURL = URL.createObjectURL(new Blob(
+        [`(${fireballWorker.toString()})()`],
         {type: 'application/javascript'}
     ));
 
@@ -210,7 +210,7 @@ function onSuccess(callback) {
 }
 
 export default {
-    run: run,
-    getScore: getScore,
-    onSuccess: onSuccess
+    run,
+    getScore,
+    onSuccess
 };
