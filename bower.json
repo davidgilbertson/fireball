@@ -1,0 +1,22 @@
+{
+  "name": "fireball",
+  "version": "1.1.2",
+  "homepage": "https://github.com/davidgilbertson/fireball",
+  "description": "Fireball is a small script that runs when your web page is loaded. It generates a score based on the performance of the user's hardware.",
+  "main": "dist/index.min.js",
+  "keywords": [
+    "fireball",
+    "performance"
+  ],
+  "authors": [
+    "David Gilbertson <gilbertson.david@gmail.com> (http://www.dg707.com)"
+  ],
+  "maintainers": [
+    "Fergal Hanley <fergalhanley@gmail.com> (http://fergalhanley.com)"
+  ],
+  "license": "ISC",
+  "ignore": [
+    "**/.*",
+    "node_modules"
+  ]
+}

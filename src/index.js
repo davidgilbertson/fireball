@@ -118,7 +118,30 @@ function appendClasses(options) {
     }
 }
 
-function runFireball(options) {
+const fireballWorker = function(){
+    'use strict';
+
+    self.addEventListener('message', function(e) {
+        self.postMessage(runTest());
+    }, false);
+
+    function runTest() {
+        const OPS = 1000000;
+        var startTime = new Date().valueOf();
+
+        for (let i = 0; i < OPS; i++) {
+            /=/.exec('111soqs57qo8o8480qo18sor2011r3n591q7s6s37r120904');
+            /=/.exec('SbeprqRkcvengvba=633669315660164980');
+            /=/.exec('FrffvbaQQS2=111soqs57qo8o8480qo18sor2011r3n591q7s6s37r120904');
+        }
+
+        const endTime = new Date().valueOf();
+        const opsPerMilli = OPS / (endTime - startTime);
+        return opsPerMilli;
+    }
+};
+
+function run(options) {
     finalScore = options.defaultScore || 0;
 
     if (!window.Worker) {
@@ -131,7 +154,14 @@ function runFireball(options) {
     const debug = options.debug || false;
     const runs = options.runs || 7;
     let count = 0;
-    const fbWorker = new Worker('/fireball-js/fireball_worker.js');
+    const blobURL = URL.createObjectURL(new Blob(
+        [`(${fireballWorker.toString()})()`],
+        {type: 'application/javascript'}
+    ));
+
+    const fbWorker = new Worker(blobURL);
+
+    URL.revokeObjectURL(blobURL);
 
     fbWorker.addEventListener('message', function (e) {
         logScore(e.data);
@@ -171,7 +201,7 @@ function getScore() {
     return finalScore;
 }
 
-function addCallback(callback) {
+function onSuccess(callback) {
     if (hasFinished) {
         callback(finalScore);
     } else {
@@ -180,7 +210,7 @@ function addCallback(callback) {
 }
 
 export default {
-    run: runFireball,
-    getScore: getScore,
-    onSuccess: addCallback
+    run,
+    getScore,
+    onSuccess
 };
