@@ -1,7 +1,7 @@
 # Fireball
 Breakpoints for performance.
 
-Fireball is a small script that runs when your web page is loaded. It generates a score based on the performance of the user's hardware. 
+Fireball is a small script that runs when your web page is loaded. It generates a score based on the performance of the user's hardware.
 
 It hands off the work to a different thread so won't slow the rest of your site down while it's running.
 
@@ -26,7 +26,7 @@ var Fireball = require('fireball-js');
 Fireball.run();
 ```
 
-or if adding the script directly or using bower Fireball will be already available: 
+or if adding the script directly or using bower Fireball will be already available:
 
 ```javascript
 Fireball.run();
@@ -95,11 +95,13 @@ Fireball.onSuccess(callback);
 
 `callback` will be passed a single argument, the score.
 
-This is handy if you have a modular system and want to access the fireball score in a different module 
+This is handy if you have a modular system and want to access the fireball score in a different module
 without using a global variable. If the score has already been calculated this will execute immediately.
 
 ## Browser support
-Modern browsers and IE10+, Android 4.4+, Safari 5.1+
+Chrome, Firefox, Safari, Android 4.4+.
+
+Won't work in the current IE (11) or Edge (25).
 
 ## Benchmark
 The Fireball score is roughly aligned with [the Octane benchmark](http://chromium.github.io/octane/) score;

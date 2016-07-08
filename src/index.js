@@ -3,13 +3,13 @@ let finalScore = 0;
 let hasFinished = false;
 const scores = [];
 
-function newEl(tag, opt) {
-    tag = tag || 'div';
+const getEl = selector => document.querySelector(selector);
 
+function newEl(tag, opt) {
     const el = document.createElement(tag);
 
     for (const prop in opt) {
-        if (prop.hasOwnProperty) {
+        if (opt.hasOwnProperty(prop)) {
             if (prop === 'style') {
                 for (const styleProp in opt[prop]) {
                     el[prop][styleProp] = opt[prop][styleProp];
@@ -24,7 +24,7 @@ function newEl(tag, opt) {
 }
 
 function runCallbacks() {
-    callbacks.forEach((callback) => {
+    callbacks.forEach(callback => {
         callback(finalScore);
     });
 }
@@ -32,23 +32,22 @@ function runCallbacks() {
 function getMedianScore() {
     if (!scores.length) return;
 
-    let scoreArray = scores;
-    const midPoint = Math.floor(scoreArray.length / 2);
+    const midPoint = Math.floor(scores.length / 2);
     let result;
 
-    scoreArray.sort();
+    scores.sort();
 
-    if (scoreArray.length % 2) {
-        result = scoreArray[midPoint];
+    if (scores.length % 2) {
+        result = scores[midPoint];
     } else {
-        result = (scoreArray[midPoint - 1] + scoreArray[midPoint]) / 2.0;
+        result = (scores[midPoint - 1] + scores[midPoint]) / 2.0;
     }
 
     return Math.round(result);
 }
 
 function log(str) {
-    if (!document.querySelector('#logging-panel')) {
+    if (!getEl('#logging-panel')) {
         const logEl = newEl('div', {
             id: 'logging-panel',
             style: {
@@ -78,17 +77,17 @@ function log(str) {
         const logDiv = newEl('div', {id: 'log'});
         logEl.appendChild(logDiv);
 
-        document.querySelector('body').appendChild(logEl);
+        getEl('body').appendChild(logEl);
     }
 
-    const log = document.querySelector('#log');
+    const log = getEl('#log');
 
     if (str === '_finished_') {
-        document.querySelector('#log-median').textContent = 'Score: ' + getMedianScore().toLocaleString();
+        getEl('#log-median').textContent = `Score: ${getMedianScore().toLocaleString()}`;
 
         log.style.color = 'grey';
     } else {
-        log.innerHTML += '<p> >' + str + '</p>';
+        log.innerHTML += `<p> > ${str} </p>`;
     }
 }
 
@@ -110,7 +109,7 @@ function appendClasses(options) {
 
     if (className) {
         const classSelector = options.classEl || 'body';
-        const classEl = document.querySelector(classSelector);
+        const classEl = getEl(classSelector);
 
         if (classEl) {
             classEl.classList.add(className); // If window.Worker exists, classList almost certainly does
@@ -118,10 +117,10 @@ function appendClasses(options) {
     }
 }
 
-const fireballWorker = function(){
+const fireballWorker = () => {
     'use strict';
 
-    self.addEventListener('message', function(e) {
+    self.addEventListener('message', () => {
         self.postMessage(runTest());
     }, false);
 
@@ -136,20 +135,17 @@ const fireballWorker = function(){
         }
 
         const endTime = new Date().valueOf();
-        const opsPerMilli = OPS / (endTime - startTime);
-        return opsPerMilli;
+        return OPS / (endTime - startTime);
     }
 };
 
-function run(options) {
+export function run(options = {}) {
     finalScore = options.defaultScore || 0;
 
     if (!window.Worker) {
         options.callback && options.callback();
         return;
     }
-
-    options = options || {};
 
     const debug = options.debug || false;
     const runs = options.runs || 7;
@@ -163,7 +159,7 @@ function run(options) {
 
     URL.revokeObjectURL(blobURL);
 
-    fbWorker.addEventListener('message', function (e) {
+    fbWorker.addEventListener('message', e => {
         logScore(e.data);
     }, false);
 
@@ -178,7 +174,7 @@ function run(options) {
         if (debug) log(finalScore.toLocaleString());
 
         if (count < runs) {
-            window.setTimeout(function () {
+            setTimeout(() => {
                 fbWorker.postMessage('run');
             }, 100);
         } else {
@@ -197,20 +193,14 @@ function run(options) {
     fbWorker.postMessage('run');
 }
 
-function getScore() {
+export function getScore() {
     return finalScore;
 }
 
-function onSuccess(callback) {
+export function onSuccess(callback) {
     if (hasFinished) {
         callback(finalScore);
     } else {
         callbacks.push(callback);
     }
 }
-
-export default {
-    run,
-    getScore,
-    onSuccess
-};
