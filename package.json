@@ -1,6 +1,6 @@
 {
   "name": "fireball-js",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Breakpoints for performance",
   "main": "dist/index.min.js",
   "scripts": {
@@ -18,9 +18,9 @@
   "author": "David Gilbertson <gilbertson.david@gmail.com> (http://www.dg707.com)",
   "contributors": [
     {
-      "name" : "Fergal Hanley",
-      "email" : "fergalhanley@gmail.com",
-      "url" : "http://fergalhanley.com"
+      "name": "Fergal Hanley",
+      "email": "fergalhanley@gmail.com",
+      "url": "http://fergalhanley.com"
     }
   ],
   "license": "ISC",
