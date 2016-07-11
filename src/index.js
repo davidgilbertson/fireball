@@ -139,7 +139,7 @@ const fireballWorker = () => {
     }
 };
 
-export function run(options = {}) {
+function run(options = {}) {
     finalScore = options.defaultScore || 0;
 
     if (!window.Worker) {
@@ -193,14 +193,20 @@ export function run(options = {}) {
     fbWorker.postMessage('run');
 }
 
-export function getScore() {
+function getScore() {
     return finalScore;
 }
 
-export function onSuccess(callback) {
+function onSuccess(callback) {
     if (hasFinished) {
         callback(finalScore);
     } else {
         callbacks.push(callback);
     }
 }
+
+export default {
+    run,
+    getScore,
+    onSuccess,
+};
