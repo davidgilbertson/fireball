@@ -140,6 +140,8 @@ const fireballWorker = () => {
 };
 
 function run(options = {}) {
+    if (typeof window === 'undefined') return;
+
     finalScore = options.defaultScore || 0;
 
     if (!window.Worker) {
